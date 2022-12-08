@@ -26,10 +26,3 @@ To predict whether someone has a stroke or not, we need to make categorical mode
 1. 3 most important variables for stroke prediction are : Age, Average Glucose Level and BMI which combined predictive power of 75%.
 2. Our Logistic Regression Model have 84% probability to identify people who have stroke (from AUC score).
 3. Describe AGE, BMI, glucose of stroke people.
-
-
-
-
-
-
-
