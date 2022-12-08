@@ -28,6 +28,7 @@ To predict whether someone has a stroke or not, we need to make categorical mode
 3. Describe AGE, BMI, glucose of stroke people.
 
 # Contents of the repository:
+
 Healthcare Dataset on Stroke.csv
 Stroke Detection Final EDA Material.pdf
 Sampling.ipynb
