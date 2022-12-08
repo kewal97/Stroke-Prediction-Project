@@ -35,3 +35,4 @@ To predict whether someone has a stroke or not, we need to make categorical mode
 4. Modelling Draft.ipynb
 5. DATA 5100 Project Sample Comparison.ipynb
 6. Project DATA 5100 Group 3.pptx
+7. Project DATA 5100 EDA.Rmd
