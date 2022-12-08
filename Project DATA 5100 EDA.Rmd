@@ -1,0 +1,364 @@
+---
+title: "Project DATA 5100"
+author: "Exploratory Data Analysis"
+date: "December 2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+```
+
+# Overview 
+
+In this data set we have an unbalanced population, where 5% of the sample has the characteristic of interest, which is having had a stroke, compared to 95% who have not had one.  As a sociodemographic summary of this sample we have the following: 
+
+  - 58% of the sample are women
+  - The average age of the sample is 43 years. 
+  - 65% have ever been married
+  - 57% work in a private company
+  - 50% of the sample lives in an urban residence.
+In addition, as a summary of characteristics associated with health, we have the following:
+  - 10% of the sample has hypertension
+  - 5% suffer from heart disease
+  - The average level of glucose found is 106
+  - The average BMI of the sample is 28%.
+  - 32% of the sample smokes or has ever smoked.
+
+When doing an analysis of the variables compared with the characteristic of interest: having had a Stroke, the following are found as significant values:
+
+  - 13% of people who have hypertension have had stroke, this value is higher than 4% of those who do not have hypertension and have had a stroke.
+  - 17% of people who suffer from heart disease have had a stroke, this value is higher than 5% of those who do not suffer from heart disease and have had a stroke.
+  - People who have had a stroke are on average 68 years old, while those who have not had a stroke are on average 42 years old.
+  - People who have had a stroke have an average blood glucose level of 132 while those who have not had a stroke have an average blood glucose level of 104.
+  - People who have suffered a stroke have an average BMI of 30.47 while those who have not suffered a stroke have an average BMI of 28.82.
+  - In the other variables analyzed, no significant differences were found. 
+
+From the above we can conclude that suffering hypertension and heart problems increase the risk of suffering a stroke.  Likewise, strokes are directly related to older people, with a high glucose level and high BMI.
+
+```{r}
+data <- read.csv("https://raw.githubusercontent.com/kewal97/Stroke-Prediction-Project/main/healthcare-dataset-stroke-data.csv")
+data <- data[data$gender!="Other",]
+```
+
+\
+\
+
+# EDA
+
+# Stroke 
+
+
+```{r}
+t <- round(prop.table(table(data$stroke)),3)
+knitr::kable(t,col.names = c("Stroke","Porpotion"))
+```
+
+```{r, out.width="70%",fig.align = "center"}
+bp <- barplot(t,las=1,main="Porpotion Of Stroke",col=c("#4E79A7","#F28E2B"),
+        ylab="Porpotion")
+text(bp, c(0.83,0.05), round(t, 3),cex=1,pos=3) 
+```
+
+We have an unbalanced population, where 5% of the people who have suffered a stroke  have suffered a stroke compared to the remaining 95% who have not suffered a stroke.
+
+# Gender 
+
+```{r}
+t1 <- round(prop.table(table(data$gender)),3)
+knitr::kable(t1,col.names = c("Gender","Porpotion"))
+```
+```{r, out.width="70%",fig.align = "center"}
+bp <- barplot(t1,las=1,main="Porpotion Of Gender",col=c("#4E79A7","#F28E2B"),
+        ylab="Porpotion")
+text(bp, c(0.52,0.35), round(t1, 3),cex=1,pos=3) 
+```
+
+```{r, out.width="70%",fig.align = "center"}
+t2 <- round(prop.table(table(data$gender,data$stroke),1),3)
+bp <- barplot(t(t2),las=1,main="Porpotion Of Stroke by Gender",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion",beside = T,
+              legend.text = T)
+text(bp, c(0.83,0.03), round(t(t2), 3),cex=1,pos=3)
+```
+
+58% of the population are women, however, when analyzing by gender, the percentage of men. However, when analyzed by gender, the percentage of men and women with stroke is 5% each.  stroke and the percentage of men with stroke is 5% for each gender. This indicates that it is equally likely to suffer a stroke whether male or female.
+
+# Age 
+
+```{r}
+summary(data$age)
+```
+```{r}
+df_age <- data.frame(mean=mean(data$age),sd=sd(data$age))
+knitr::kable(df_age,caption='Summary Age')
+```
+
+```{r, out.width="70%",fig.align = "center"}
+par(mfrow=c(1,2))
+hist(data$age,freq = F,main = "Histogram of Age",
+     col="#4E79A7",las=1,cex.axis=0.9,xlab="age")
+lines(density(data$age),col="#F28E2B", lwd = 2)
+
+boxplot(data$age,horizontal =T,ylim=c(-20,100),col="#4E79A7",
+        xlab="age",main="Boxplot of age")
+```
+
+```{r, out.width="70%",fig.align = "center"}
+par(mfrow=c(1,3))
+hist(data$age[data$stroke==0], main= "Histogram of age in people without stroke",
+     ,col="#4E79A7",xlab="Age",cex.main=0.8)
+hist(data$age[data$stroke==1], main= "Histogram of age in people with stroke",
+     ,col="#F28E2B",xlab="Age",cex.main=0.8)
+
+boxplot(data$age~data$stroke,las=1,
+        xlab="Stroke",ylab="Age",main="Age by Stroke",
+        col=c("#4E79A7","#F28E2B"),cex.main=0.8)
+```
+
+```{r}
+tapply(data$age, data$stroke, summary)
+```
+The average age is 43 years, 75% of the people in the database are equal to or younger than 61 years old When analyzing the ages by stroke, it is identified that the average age of people who have not suffered a stroke is 41 years old, while those who have suffered a stroke are on average 67 years old, i.e. the older the person is, the greater the probability of suffering a stroke.
+
+# Hypertension 
+
+
+```{r}
+t3 <- round(prop.table(table(data$hypertension)),3)
+knitr::kable(t3,col.names = c("Hypertension","Porpotion"))
+```
+
+```{r, out.width="70%",fig.align = "center"}
+bp <- barplot(t3,las=1,main="Porpotion Of Hypertension",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion")
+text(bp, c(0.8,0.1), round(t3, 3),cex=1,pos=3) 
+```
+
+
+```{r, out.width="70%",fig.align = "center"}
+t4 <- round(prop.table(table(data$hypertension,data$stroke),1),3)
+bp <- barplot(t(t4),las=1,main="Porpotion Of Stroke by Hypertension",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion",beside = T,
+              legend.text = T)
+text(bp, c(0.75,0.03), round(t(t4), 3),cex=1,pos=3)
+```
+
+10% of the people in the database had suffered from hypertension.  When reviewing the differences by stroke, we found that 4% of the people who do not suffer from hypertension have had a stroke compared to 13% of the people who do have hypertension who have suffered a stroke, this difference in proportions suggests that if a person has hypertension, he/she is more likely to suffer a stroke.
+
+# Hearth disease
+
+
+```{r}
+t5 <- round(prop.table(table(data$heart_disease)),3)
+knitr::kable(t5,col.names = c("Hearth disease","Porpotion"))
+```
+
+```{r, out.width="70%",fig.align = "center"}
+bp <- barplot(t5,las=1,main="Porpotion Of Hypertension",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion")
+text(bp, c(0.8,0.1), round(t5, 3),cex=1,pos=3) 
+```
+
+```{r, out.width="70%",fig.align = "center"}
+t6 <- round(prop.table(table(data$heart_disease,data$stroke),1),3)
+bp <- barplot(t(t6),las=1,main="Porpotion Of Stroke by Heart disease",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion",beside = T,
+              legend.text = T)
+text(bp, c(0.70,0.03), round(t(t6), 3),cex=1,pos=3)
+```
+
+5% of the sample suffers from heart disease.  When reviewing the differences by stroke, we see that 17% of the people with heart  people with heart disease have had a stroke, compared to 5% of those without heart disease.  5% of those without heart disease. This indicates that there are differences between these two groups. and therefore if a person has heart problems, he or she is more likely to have a stroke
+
+# Ever married
+
+
+```{r}
+t7 <- round(prop.table(table(data$ever_married)),3)
+knitr::kable(t7,col.names = c("Ever married","Porpotion"))
+```
+
+```{r, out.width="70%",fig.align = "center"}
+bp <- barplot(t7,las=1,main="Porpotion Of Ever married",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion")
+text(bp, c(0.25,0.55), round(t7, 3),cex=1,pos=3) 
+```
+
+
+```{r, out.width="70%",fig.align = "center"}
+t8 <- round(prop.table(table(data$ever_married,data$stroke),1),3)
+bp <- barplot(t(t8),las=1,main="Porpotion Of Stroke by ever married",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion",beside = T,
+              legend.text = T)
+text(bp, c(0.75,0.03), round(t(t8), 3),cex=1,pos=3)
+```
+
+65% of the sample had ever been married.  Of those who are married, 6% have suffered a stroke compared to 1% of those who are not married.  1% of those who are not married, although the difference is not significant
+
+# Work type
+
+
+```{r}
+t9 <- round(prop.table(table(data$work_type)),3)
+knitr::kable(t9,col.names = c("Work type","Porpotion"))
+```
+
+```{r, out.width="70%",fig.align = "center"}
+bp <- barplot(t9,las=1,main="Porpotion Of Work type",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion")
+text(bp, c(0.12,0.12,0.007,0.5,0.15), round(t9, 3),cex=1,pos=3) 
+```
+
+
+```{r, out.width="70%",fig.align = "center"}
+t10 <- round(prop.table(table(data$work_type,data$stroke),1),3)
+bp <- barplot(t(t10),las=1,main="Porpotion Of Stroke by work type",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion",beside = T,
+              legend.text = T)
+text(bp, c(0.83,0.05), round(t(t10), 3),cex=0.7,pos=3)
+```
+
+57% of the sample works in a private company.  No differences were identified in the percentage of stroke by profession, i.e. the profession does not influence the strike. i.e. the profession does not influence the occurrence of a stroke.
+
+# Residence type
+
+```{r}
+t11 <- round(prop.table(table(data$Residence_type)),3)
+knitr::kable(t11,col.names = c("Residence","Porpotion"))
+```
+
+```{r, out.width="70%",fig.align = "center"}
+bp <- barplot(t11,las=1,main="Porpotion Of Residence",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion")
+text(bp, c(0.44,0.44), round(t11, 3),cex=1,pos=3) 
+```
+
+
+```{r, out.width="70%",fig.align = "center"}
+t12 <- round(prop.table(table(data$Residence_type,data$stroke),1),3)
+bp <- barplot(t(t12),las=1,main="Porpotion Of Stroke by residence",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion",beside = T,
+              legend.text = T)
+text(bp, c(0.83,0.05), round(t(t12), 3),cex=1,pos=3)
+```
+
+The sample is very equitable with respect to type of residence,  50% live in rural areas and 50% in urban areas.  When comparing by stroke, no differences are found, i.e., the fact that a person that the fact that a person has a stroke does not depend on his or her place of residence. place of residence. 
+
+# Average glucose level 
+
+```{r}
+summary(data$avg_glucose_level)
+```
+```{r}
+df_glucose <- data.frame(mean=mean(data$avg_glucose_level),sd=sd(data$avg_glucose_level))
+knitr::kable(df_glucose,caption='Summary Glucose')
+```
+
+
+```{r, out.width="70%",fig.align = "center"}
+par(mfrow=c(1,2))
+hist(data$avg_glucose_level,freq = F,
+     main = "Histogram of Average glucose level",
+     col="#4E79A7",las=1,cex.axis=0.9,xlab="Avg glucose level")
+lines(density(data$avg_glucose_level),col="#F28E2B", lwd = 2)
+
+boxplot(data$avg_glucose_level,horizontal =T,col="#4E79A7",
+        xlab="Avg glucose level",main="Boxplot of Average glucose level")
+```
+
+```{r, out.width="70%",fig.align = "center"}
+par(mfrow=c(1,3))
+hist(data$avg_glucose_level[data$stroke==0], main= "Histogram of avg glucose in people without stroke",
+     ,col="#4E79A7",xlab="Avg glucose",cex.main=0.8)
+hist(data$avg_glucose_level[data$stroke==1], main= "Histogram of avg glucose in people with stroke",
+     ,col="#F28E2B",xlab="Avg glucose",cex.main=0.8)
+
+boxplot(data$avg_glucose_level~data$stroke,las=1,
+        xlab="Stroke",ylab="Avg glucose",main="Avg glucose by Stroke",
+        col=c("#4E79A7","#F28E2B"),cex.main=0.8)
+```
+
+```{r}
+tapply(data$avg_glucose_level, data$stroke, summary)
+```
+On average, the people in the sample had a glucose level of 106. The distribution associated with the average glucose level is positively skewed and bimodal. positively skewed and bimodal.  When reviewed by stroke, the distributions retain their bimodality, however in the case of stroke, high glucose levels are more frequent. In addition to this, we found that on average a person with stroke has a avg glucose level of 132 compared to 104 for a person without stroke.  This indicates that on average people who have suffered stroke have a higher avg glucose level.
+
+
+# Bmi
+
+```{r}
+data$bmi <- as.numeric(data$bmi)
+summary(data$bmi)
+```
+
+```{r}
+df_bmi <- data.frame(mean=mean(data$bmi,na.rm=T),sd=sd(data$bmi,na.rm=T))
+knitr::kable(df_bmi,caption='Summary BMI')
+```
+
+
+```{r, out.width="70%",fig.align = "center"}
+par(mfrow=c(1,2))
+hist(data$bmi,freq = F,
+     main = "Histogram of BMI",
+     col="#4E79A7",las=1,cex.axis=0.9,xlab="bmi")
+lines(density(na.omit(data$bmi)),col="#F28E2B", lwd = 2)
+
+boxplot(data$bmi,horizontal =T,col="#4E79A7",
+        xlab="bmi",main="Boxplot of BMI")
+```
+
+```{r, out.width="70%",fig.align = "center"}
+par(mfrow=c(1,3))
+hist(data$bmi[data$stroke==0], main= "Histogram of bmi in people without stroke",
+     ,col="#4E79A7",xlab="bmi",cex.main=0.8)
+hist(data$bmi[data$stroke==1], main= "Histogram of bmi in people with stroke",
+     ,col="#F28E2B",xlab="bmi",cex.main=0.8)
+
+boxplot(data$bmi~data$stroke,las=1,
+        xlab="Stroke",ylab="bmi",main="BMI by Stroke",
+        col=c("#4E79A7","#F28E2B"),cex.main=0.8)
+```
+
+```{r}
+tapply(data$bmi, data$stroke, summary)
+```
+The distribution of bmi is positively skewed, with mean at 28. 75% of the people have a bmi lower than 33.10 and a total of 201 null values.  When reviewed by stroke, we find that on average a person with stroke has a bmi of 30.47, higher than the 28.82 average of a person who has not suffered stroke.  In other words, the data show that if a person has a higher bmi, he or she is more likely to have a stroke
+
+# Smoking status
+
+```{r}
+t13 <- round(prop.table(table(data$smoking_status)),3)
+knitr::kable(t13,col.names = c("Smoking","Porpotion"))
+```
+
+```{r, out.width="70%",fig.align = "center"}
+bp <- barplot(t13,las=1,main="Porpotion Of Residence",
+              col=c("#4E79A7","#F28E2B",'#E15759','#76B7B2'),
+              ylab="Porpotion")
+text(bp, c(0.17,0.33,0.15,0.26), round(t13, 3),cex=1,pos=3) 
+```
+
+
+```{r, out.width="70%",fig.align = "center"}
+t14 <- round(prop.table(table(data$smoking_status,data$stroke),1),3)
+bp <- barplot(t(t14),las=1,main="Porpotion Of Stroke by smoking",
+              col=c("#4E79A7","#F28E2B"),
+              ylab="Porpotion",beside = T,
+              legend.text = T)
+text(bp, c(0.83,0.05), round(t(t14), 3),cex=0.8,pos=3)
+```
+
+
+Seventeen percent of the sample previously smoked, 15% smoke and 37% have never smoked.  The proportion of people with stroke in each of the smoking status categories are very similar, i.e., there are no obvious differences between the two categories.  The proportions of people with stroke in each of the smoking status categories are very similar, i.e. there are no obvious differences to suggest that smoking increases the risk of strok
