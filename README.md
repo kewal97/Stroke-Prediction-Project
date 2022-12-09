@@ -40,4 +40,4 @@ To predict whether someone has a stroke or not, we need to make categorical mode
 
 1. Obermeyer, Z., Powers, B., Vogeli, C. & Mullainathan, S. Science 336, 447–453 (2019).
 2. Bais, Gourav. “How to Handle Imbalance Datasets for Classification Use-Cases.” Medium, Heartbeat, 24 Oct. 2022, https://heartbeat.comet.ml/how-to-handle-imbalance-datasets-for-classification-use-cases-de97806711d.
-Mandrekar , Jayawant, et al. “Receiver Operating Characteristic Curve in Diagnostic Test Assessment.” Journal of Thoracic Oncology, Elsevier, 20 Nov. 2015, https://www.sciencedirect.com/science/article/pii/S1556086415306043#:~:text=In%20general%2C%20an%20AUC%20of,than%200.9%20is%20considered%20outstanding. 
+3. Mandrekar , Jayawant, et al. “Receiver Operating Characteristic Curve in Diagnostic Test Assessment.” Journal of Thoracic Oncology, Elsevier, 20 Nov. 2015, https://www.sciencedirect.com/science/article/pii/S1556086415306043#:~:text=In%20general%2C%20an%20AUC%20of,than%200.9%20is%20considered%20outstanding. 
