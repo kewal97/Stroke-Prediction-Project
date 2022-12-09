@@ -23,16 +23,21 @@ We will first use panda to upload, examine and clean the dataset if needed. Then
 To predict whether someone has a stroke or not, we need to make categorical models like a decision tree or logistic regression. The data will be split in 2 parts, 75% for training and 25% for testing purposes. With the challenge of highly imbalanced data, we decided to sample the non-stroke group to check the distribution with the original data with 95% confidence with 5% margin of error. The sample size would be 1,417 out of the population of 4,861 and the original stroke group would remain. Then we test if the non-stroke samples have similar distributions with the original data, before performing exploratory analysis between the non-stroke sample and stroke group with other attributes.
 
 # Conclusion:
-1. 3 most important variables for stroke prediction are : Age, Average Glucose Level and BMI which combined predictive power of 75%.
+1. 3 most important variables for stroke prediction are : Age, Average Glucose Level and BMI which combined predictive power of 75%. Also, people with underlying conditions like hypertension and heart disease are more likely to also get stroke.
 2. Our Logistic Regression Model have 84% probability to identify people who have stroke (from AUC score).
-3. Describe AGE, BMI, glucose of stroke people.
 
 # Contents of the repository:
 
-1. Healthcare Dataset on Stroke.csv
-2. Stroke Detection Final EDA Material.pdf
-3. Sampling.ipynb
-4. Modelling Draft.ipynb
-5. DATA 5100 Project Sample Comparison.ipynb
-6. Project DATA 5100 Group 3.pptx
-7. Project DATA 5100 EDA.Rmd
+1. Dataset: Healthcare Dataset on Stroke.csv
+2. Explortory Data Analysis: Stroke Detection Final EDA Material.pdf
+3. Modeling Code: 
+
+
+
+
+
+4. Sampling.ipynb
+5. Modelling Draft.ipynb
+6. DATA 5100 Project Sample Comparison.ipynb
+7. Project DATA 5100 Group 3.pptx
+8. Project DATA 5100 EDA.Rmd
