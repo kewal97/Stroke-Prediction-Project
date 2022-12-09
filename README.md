@@ -31,8 +31,6 @@ To predict whether someone has a stroke or not, we need to make categorical mode
 1. Dataset: Healthcare Dataset on Stroke.csv
 2. Explortory Data Analysis: Stroke Detection Final EDA Material.pdf
 3. DT5100_Group3_Project Modeling Code.ipynb
-4. Sampling.ipynb
-5. Modelling Draft.ipynb
-6. DATA 5100 Project Sample Comparison.ipynb
-7. Project DATA 5100 Group 3.pptx
-8. Project DATA 5100 EDA.Rmd
+4. DATA 5100 Project Sample Comparison.ipynb
+5. Project DATA 5100 Group 3.pptx
+6. Project DATA 5100 EDA.Rmd
